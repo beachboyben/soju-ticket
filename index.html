@@ -296,7 +296,7 @@ function renderGrid(state){
     el.style.setProperty('--rot', seedRot(i)+'deg');
     el.innerHTML = `
       <div class="tnum">NO. ${String(i).padStart(2,'0')}</div>
-      <div class="tmain">FREE <span class="accent">SOJU</span></div>
+      <div class="tmain">FREE <span class="accent">DRINK</span></div>
       <div class="tfoot"><span>courtesy of Ben</span><span class="kr">소주</span></div>
       <div class="stamp">CLAIMED</div>
     `;
@@ -328,7 +328,7 @@ async function claimTicket(i){
     if (result.alreadyClaimed) {
       showToast(`Ticket #${String(i).padStart(2,'0')} was just claimed by someone else.`);
     } else {
-      showToast(`Ticket #${String(i).padStart(2,'0')} claimed. Go find Ben.`);
+      showToast(`Ticket #${String(i).padStart(2,'0')} claimed. Dm me price.`);
     }
   }catch(e){
     console.error(e);
