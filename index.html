@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Soju — Courtesy of Ben</title>
+<title>Happy Birthday <3, FREE DRINKS FROM 711 FOR U!!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -231,9 +231,9 @@
 <body>
 
 <header>
-  <div class="eyebrow">30 Tickets · One Pour Each</div>
-  <h1>FREE <span>SOJU</span></h1>
-  <div class="sub">Courtesy of Ben. Tap a ticket to claim it — each one works exactly once, for everyone.</div>
+  <div class="eyebrow">Click on ONE ticket to claim ONE drink</div>
+  <h1>FREE <span>DRINK!</span></h1>
+  <div class="sub">Dm me the price after I'll pay you back (Only from 711 plz i dont wanna go broke)</div>
   <div class="counter"><b id="remaining">30</b> / 30 remaining</div>
 </header>
 
@@ -241,7 +241,7 @@
   <div class="loading">loading tickets…</div>
 </div>
 
-<footer>No purchase necessary. Redemption subject to Ben's mood and soju supply.</footer>
+<footer>I hope u enjoy this gift, happy birthday.</footer>
 <div id="toast" class="toast"></div>
 
 <!-- Firebase (free tier) -->
@@ -251,13 +251,7 @@ import {
   getFirestore, doc, getDoc, setDoc, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-// ======================================================================
-// 1) Go to https://console.firebase.google.com -> Add project (free).
-// 2) Inside the project: Build > Firestore Database > Create database
-//    (start in "test mode" for now, or use the rules note below).
-// 3) Project settings (gear icon) > General > "Your apps" > Add app > Web.
-//    Copy the firebaseConfig object it gives you and paste it below.
-// ======================================================================
+// firebase storage
 const firebaseConfig = {
   apiKey: "AIzaSyCttGm_hH2aiuQ9_cjB5sQQw5a9kl9FW8w",
   authDomain: "sojutickets.firebaseapp.com",
