@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Soju — Courtesy of Ben</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#0F4A34;
+    --green-dark:#0A3527;
+    --paper:#F3EAD2;
+    --paper-dim:#DDD2B5;
+    --gold:#C9A227;
+    --stamp-red:#B23A2E;
+    --ink:#1B1B18;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0;
+    background:var(--green-dark);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.03), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(255,255,255,0.03), transparent 40%);
+    color:var(--paper);
+    font-family:'Space Mono', monospace;
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+  }
+
+  header{
+    text-align:center;
+    padding:56px 20px 32px;
+  }
+  .eyebrow{
+    letter-spacing:0.35em;
+    font-size:11px;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:clamp(52px, 12vw, 108px);
+    line-height:0.9;
+    margin:0;
+    color:var(--paper);
+    letter-spacing:0.02em;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.25);
+  }
+  h1 span{ color:var(--gold); }
+  .sub{
+    margin-top:14px;
+    font-size:14px;
+    color:var(--paper-dim);
+    max-width:520px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.6;
+  }
+  .counter{
+    margin-top:22px;
+    display:inline-flex;
+    gap:8px;
+    align-items:baseline;
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    color:var(--gold);
+    border:1px solid rgba(201,162,39,0.4);
+    padding:8px 16px;
+    border-radius:2px;
+  }
+  .counter b{ font-size:20px; color:var(--paper); }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(210px, 1fr));
+    gap:22px;
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px 24px 100px;
+  }
+
+  .ticket{
+    position:relative;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:6px;
+    padding:20px 18px 18px;
+    min-height:150px;
+    cursor:pointer;
+    user-select:none;
+    box-shadow:0 6px 14px rgba(0,0,0,0.28);
+    transform:rotate(var(--rot,0deg));
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+    overflow:hidden;
+  }
+  .ticket:hover:not(.used){
+    transform:rotate(0deg) translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.35);
+  }
+  .ticket::before, .ticket::after{
+    content:"";
+    position:absolute;
+    left:0; right:0;
+    height:14px;
+    background:
+      radial-gradient(circle at 10px 50%, var(--green-dark) 6px, transparent 7px) repeat-x;
+    background-size:20px 14px;
+  }
+  .ticket::before{ top:-7px; }
+  .ticket::after{ bottom:-7px; }
+
+  .tnum{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:#8a8367;
+  }
+  .tmain{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:30px;
+    line-height:1;
+    margin-top:10px;
+    letter-spacing:0.01em;
+  }
+  .tmain .accent{ color:var(--green-deep); }
+  .tfoot{
+    margin-top:14px;
+    font-size:11px;
+    color:#6b6550;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .kr{
+    font-family:'Noto Serif KR', serif;
+    font-size:11px;
+    color:#8a8367;
+  }
+
+  .stamp{
+    position:absolute;
+    top:38%;
+    left:50%;
+    transform:translate(-50%,-50%) rotate(-16deg);
+    border:3px solid var(--stamp-red);
+    color:var(--stamp-red);
+    font-family:'Bebas Neue', sans-serif;
+    font-size:26px;
+    letter-spacing:0.12em;
+    padding:4px 14px;
+    border-radius:4px;
+    opacity:0;
+    transform-origin:center;
+    pointer-events:none;
+  }
+  .ticket.used .stamp{
+    opacity:0.88;
+    animation:stampIn 0.35s ease-out;
+  }
+  .ticket.used{
+    cursor:default;
+  }
+  .ticket.used .tmain, .ticket.used .tnum, .ticket.used .tfoot, .ticket.used .kr{
+    opacity:0.35;
+  }
+  @keyframes stampIn{
+    0%{ opacity:0; transform:translate(-50%,-50%) rotate(-16deg) scale(1.6); }
+    60%{ opacity:0.95; }
+    100%{ opacity:0.88; transform:translate(-50%,-50%) rotate(-16deg) scale(1); }
+  }
+
+  footer{
+    text-align:center;
+    padding:20px 20px 50px;
+    font-size:11px;
+    color:var(--paper-dim);
+    opacity:0.7;
+  }
+
+  .toast{
+    position:fixed;
+    bottom:26px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--paper);
+    color:var(--ink);
+    padding:12px 22px;
+    border-radius:4px;
+    font-size:13px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.25s ease, transform 0.25s ease;
+    z-index:10;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  .loading{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--paper-dim);
+    font-size:13px;
+  }
+
+  .config-warning{
+    max-width:600px;
+    margin:0 auto;
+    background:#3a1414;
+    border:1px solid var(--stamp-red);
+    color:var(--paper);
+    padding:16px 20px;
+    border-radius:6px;
+    font-size:12px;
+    line-height:1.6;
+  }
+  .config-warning code{
+    background:rgba(0,0,0,0.3);
+    padding:1px 5px;
+    border-radius:3px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">30 Tickets · One Pour Each</div>
+  <h1>FREE <span>SOJU</span></h1>
+  <div class="sub">Courtesy of Ben. Tap a ticket to claim it — each one works exactly once, for everyone.</div>
+  <div class="counter"><b id="remaining">30</b> / 30 remaining</div>
+</header>
+
+<div id="grid" class="grid">
+  <div class="loading">loading tickets…</div>
+</div>
+
+<footer>No purchase necessary. Redemption subject to Ben's mood and soju supply.</footer>
+<div id="toast" class="toast"></div>
+
+<!-- Firebase (free tier) -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, setDoc, runTransaction
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+// ======================================================================
+// 1) Go to https://console.firebase.google.com -> Add project (free).
+// 2) Inside the project: Build > Firestore Database > Create database
+//    (start in "test mode" for now, or use the rules note below).
+// 3) Project settings (gear icon) > General > "Your apps" > Add app > Web.
+//    Copy the firebaseConfig object it gives you and paste it below.
+// ======================================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyCttGm_hH2aiuQ9_cjB5sQQw5a9kl9FW8w",
+  authDomain: "sojutickets.firebaseapp.com",
+  projectId: "sojutickets",
+  storageBucket: "sojutickets.firebasestorage.app",
+  messagingSenderId: "295813240336",
+  appId: "1:295813240336:web:d87061cc0a80e75b4b5c95",
+  measurementId: "G-4GE35CE9JN"
+};
+
+const CONFIGURED = firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+const TOTAL = 30;
+const rotations = [-2,1,-1,2,0,-1.5,1.5,-2.5,0.5,-0.5];
+const seedRot = i => rotations[i % rotations.length];
+
+let db = null;
+if (CONFIGURED) {
+  const app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 2200);
+}
+
+function updateCounter(state){
+  const used = Object.keys(state).length;
+  document.getElementById('remaining').textContent = TOTAL - used;
+}
+
+function renderGrid(state){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  for(let i=1;i<=TOTAL;i++){
+    const isUsed = !!state[i];
+    const el = document.createElement('div');
+    el.className = 'ticket' + (isUsed ? ' used' : '');
+    el.style.setProperty('--rot', seedRot(i)+'deg');
+    el.innerHTML = `
+      <div class="tnum">NO. ${String(i).padStart(2,'0')}</div>
+      <div class="tmain">FREE <span class="accent">SOJU</span></div>
+      <div class="tfoot"><span>courtesy of Ben</span><span class="kr">소주</span></div>
+      <div class="stamp">CLAIMED</div>
+    `;
+    if(!isUsed){
+      el.addEventListener('click', () => claimTicket(i));
+    }
+    grid.appendChild(el);
+  }
+}
+
+async function loadState(){
+  const snap = await getDoc(doc(db, "sojuTickets", "state"));
+  return snap.exists() ? snap.data() : {};
+}
+
+async function claimTicket(i){
+  const ref = doc(db, "sojuTickets", "state");
+  try{
+    const result = await runTransaction(db, async (tx) => {
+      const snap = await tx.get(ref);
+      const data = snap.exists() ? snap.data() : {};
+      if (data[i]) return { alreadyClaimed: true, data };
+      data[i] = new Date().toISOString();
+      tx.set(ref, data);
+      return { alreadyClaimed: false, data };
+    });
+    renderGrid(result.data);
+    updateCounter(result.data);
+    if (result.alreadyClaimed) {
+      showToast(`Ticket #${String(i).padStart(2,'0')} was just claimed by someone else.`);
+    } else {
+      showToast(`Ticket #${String(i).padStart(2,'0')} claimed. Go find Ben.`);
+    }
+  }catch(e){
+    console.error(e);
+    showToast('Something went wrong — try again.');
+  }
+}
+
+async function init(){
+  if (!CONFIGURED) {
+    document.getElementById('grid').innerHTML = `
+      <div class="config-warning">
+        <strong>Setup needed:</strong> this page needs a free Firebase project connected
+        before tickets can be shared across visitors. Open this file, find
+        <code>firebaseConfig</code> near the top of the script, and paste in your
+        project's config values. See the comment above it for the 3-step setup.
+      </div>`;
+    return;
+  }
+  const state = await loadState();
+  renderGrid(state);
+  updateCounter(state);
+}
+
+init();
+</script>
+
+</body>
+</html>
